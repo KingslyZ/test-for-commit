@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="base.css"/>
+    <link rel="stylesheet" href="Eindex.css"/>
+    <script src="jquery-1.11.1.js"></script>
+    <script>
+        $(function () {
+            //固定导航栏
+            if($(document).scrollTop()>$(".header").height()){
+                $(".slideShow").css("padding-top",$(".header").height())
+            }
+            else{
+                $(".slideShow").css("padding-top",0);
+            }
+            //返回顶部
+            $("#back").click(function () {
+//                $(document).scrollTop(0);
+                $("body").animate({"scrollTop":0});
+            });
+            //登录跳转
+            $("#login").click(function () {
+                window.location.href = "注册页面/login.html";
+            });
+            //注册跳转
+            $("#register").click(function () {
+                window.location.href = "注册页面/register.html";
+            })
+            //二维码显示
+            $("#app").mouseenter(function () {
+                $("#er").slideDown();
+                $("#er").css({"position": "abdolute", "top": $("#app").offset().top + 30})
+            });
+            $("#app").mouseleave(function () {
+                $("#er").slideUp();
+            });
+            //底部二维码的滑入
+            $("#sina").mouseenter(function () {
+                $("#sinaer").stop().slideDown();
+            });
+            $("#sina").mouseleave(function () {
+                $("#sinaer").stop().slideUp();
+            });
+
+            $("#wechat").mouseenter(function () {
+                $("#wechater").stop().slideDown();
+            });
+            $("#wechat").mouseleave(function () {
+                $("#wechater").stop().slideUp();
+            });
+            //地址显示
+            $("#tangle").mouseenter(function () {
+                $("#address").stop().slideDown();
+                $("#address").css({"position": "abdolute", "top": $("#tangle").offset().top + 25})
+
+            });
+            $("#address").mouseleave(function () {
+                $("#address").stop().slideUp();
+            })
+            $("select option").click(function () {
+                $("#currentcity").text($(this).text());
+            });
+            //无缝轮播图
+            var ul = document.getElementById("ul");
+            var ol = document.getElementById("ol");
+            var imgWidth = $("#ul img").width();
+            var olLiArr = ol.children;
+            var ulLiArr = ul.children;
+            ul.appendChild(ulLiArr[0].cloneNode(true));
+//            var right=document.getElementById("right");
+//            var left=document.getElementById("left");
+
+            $("#ol li").mouseenter(function () {
+                var index=$(this).index();
+                $(".slideShow #ul").stop().animate({"margin-left":-index*imgWidth},200);
+                $(this).css("background-color","#442818").siblings("li").css("background-color","#fff")
+                square=key=index;
+            });
+            var square = 0;
+            var key = 0;
+            //左侧焦点图
+            $("#left").click(function () {
+                square--;
+                key--;
+                if (square == -1) {
+                    square = 2;
+                }
+                if (key == -1) {
+                    key = 2;
+                    ul.style.left = -3 * imgWidth + "px";
+                }
+                var sss=-key*imgWidth;
+                $(".slideShow #ul").stop().animate({"margin-left":sss});
+                $("#ol li").eq(key).css("background-color","#442818").siblings("li").css("background-color","#fff");
+            })
+            //右侧焦点图
+            $("#right").click(function () {
+                square++;
+                key++;
+                if (square == 3) {
+                    square = 0;
+                }
+                if (key == 4) {
+                    key = 0;
+                    ul.style.left = 0;
+                }
+                var sss=-key*imgWidth;
+                $(".slideShow #ul").stop().animate({"margin-left":sss});
+                $("#ol li").eq(key).css("background-color","#442818").siblings("li").css("background-color","#fff");
+            });
+
+            //定时器设置
+            var timer = setInterval(autoPlay, 1000);
+            $(".slideShow").mouseenter(function () {
+                $("#arrow").stop().fadeIn();
+                clearInterval(timer);
+            })
+            $(".slideShow").mouseleave(function () {
+                $("#arrow").stop().fadeOut();
+                timer = setInterval(autoPlay, 1000);
+            });
+            //封装定时器函数
+            function autoPlay() {
+                square++;
+                key++;
+                if (square == 3) {
+                     square = 0;
+                }
+                if (key == 4) {
+                    key = 0;
+                    ul.style.left = 0;
+                }
+                var sss=-key*imgWidth;
+                $(".slideShow #ul").animate({"margin-left":sss});
+                $("#ol li").eq(key).css("background-color","#442818").siblings("li").css("background-color","#fff");
+            }
+            //楼层跳跃
+            $(document).scroll(function () {
+                if($(document).scrollTop()>800){
+                    $(".floor").show();
+                }
+            });
+            //楼层跳跃
+            $("#gift").click(function () {
+                $(document).scrollTop($(".card1").offset().top);
+                $(".floor li").eq(0).css("background-color","#442818").sibling("li").css("background-color","#fff");
+//                $(this).css("background-color","#442818").sibling("li").css("background-color","#fff");
+            });
+            $("#enjoy").click(function () {
+                $(document).scrollTop($(".card2").offset().top);
+                $(this).css("background-color","#442818").sibling("li").css("background-color","#fff");
+            });
+            $("#store").click(function () {
+                $(document).scrollTop($(".card3").offset().top);
+                $(this).css("background-color","#442818").sibling("li").css("background-color","#fff");
+            })
+            //原生JS的实现
+//            for (var i = 0; i < olLiArr.length; i++) {
+//                olLiArr[i].index = i;
+//                olLiArr[i].onmouseenter= function () {
+//                    for(var j=0;j<olLiArr.length;j++){
+//                        olLiArr[j].className="";;
+//                    }
+//                    this.className="current";
+//                    var sss = -this.index * imgWidth;
+//                    animate1(ul,sss);
+//                    square = key = this.index;
+//                }
+//            }
+
+//            var square = 0;
+//            var key = 0;
+            //左侧焦点
+//            left.onclick= function () {
+//                square--;
+//                key--;
+//                if (square == -1) {
+//                    square = 2;
+//                }
+//                if (key == -1) {
+//                    key = 3;
+//                    ul.style.left = -3 * imgWidth + "px";
+//                }
+//                //不能显示对应的li
+//                for(var j=0;j<olLiArr.length;j++){
+//                    olLiArr[j].className="";;
+//                }
+//                olLiArr[square].className="current";
+//                var sss = -key * imgWidth;
+//                animate1(ul,sss);
+//            }
+            //右侧焦点
+//            right.onclick= autoPlay;
+//            function autoPlay() {
+//                square++;
+//                key++;
+//                if (square == 3) {
+//                    square = 1;
+//                }
+//                if (key == 4) {
+//                    key = 0;
+//                    ul.style.left = 0;
+//                }
+//                for(var j=0;j<olLiArr.length;j++){
+//                    olLiArr[j].className="";;
+//                }
+//                olLiArr[square].className="current";
+//                var sss = -key * imgWidth;
+//                animate1(ul,sss);
+//            }
+//
+//            function animate1(ele,target){
+//                clearInterval(ele.timer);
+//                ele.timer=setInterval(function () {
+//                    var step=target>ele.offsetLeft?10:-10;
+//                    ele.style.left=ele.offsetLeft+step+"px";
+//                    if(Math.abs(target-ele.offsetLeft)<=Math.abs(step)){
+//                        ele.style.left=target+"px";
+//                        clearInterval(ele.timer);
+//                    }
+//                },10);
+//            }
+    })
+    </script>
+</head>
+<body>
+<!-- 头部开始-->
+<!-- 头部左侧logo-->
+<div class="header clearfix" style="position: fixed;">
+    <div class="w">
+        <!-- logo-->
+        <a href="#">
+            <img src="Eimages/logo.png" alt=""/>
+        </a>
+        <!-- 中间导航-->
+        <div class="m_nav">
+            <ul>
+                <li><a href="">首页</a></li>
+                <li><a href="">蛋糕</a></li>
+                <li><a href="">冰淇淋</a></li>
+                <li><a href="">小切块</a></li>
+                <li><a href="">全国配送</a></li>
+                <li><a href="">企业专区</a></li>
+            </ul>
+        </div>
+        <!-- 右侧导航-->
+        <div class="r_nav">
+            <!-- App下载-->
+            <a href="#" id="app">APP下载</a>
+            <!-- 地址-->
+            <ul>
+                <li><a href="#" id="currentcity">上海</a></li>
+            </ul>
+            <!-- 小三角-->
+            <div id="tangle"></div>
+            <!-- 登录栏-->
+            <a href="#" id="login">登录</a>
+            <a href="#" id="register">注册</a>
+        </div>
+    </div>
+</div>
+<!-- 二维码-->
+<div class="erweima" id="er">
+    <img src="Eimages/erweima.png" alt=""/>
+</div>
+<!-- 城市-->
+<ul id="address">
+    <select id="sel1" size="4">
+        <option value="" selected>上海</option>
+        <option value="">北京</option>
+        <option value="">河南</option>
+        <option value="">河北</option>
+        <option value="">重庆</option>
+    </select>
+</ul>
+<!-- 顶部轮播图-->
+<div class="slideShow clearfix">
+    <div id="arrow">
+        <div id="left"><</div>
+        <div id="right">></div>
+    </div>
+    <ul id="ul">
+        <li><img src="Eimages/moon.jpg" alt=""/></li>
+        <li><img src="Eimages/bus-1.jpg" alt=""/></li>
+        <li><img src="Eimages/moon1.jpg" alt=""/></li>
+    </ul>
+    <ol id="ol">
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+    </ol>
+
+</div>
+<!-- 中部图片区域-->
+<div class="middle w2 clearfix">
+    <!-- 专属订购区域-->
+    <div class="buy">
+        <a href="#">专属定制</a>
+        <a href="#">采购方案</a>
+        <a href="#">尊享服务</a>
+        <a href="#">多元合作</a>
+    </div>
+    <div class="content">
+        <p>根据企业差异化需求，提供蛋糕/配件/活动等多项需求</p>
+
+        <p>企业员工福利、礼品等全方位采购方案</p>
+
+        <p>咖啡/食品安全/烘焙及其他安全讲座及培训增值服务</p>
+
+        <p>进行异业深度合作，可根据企业需求进行多元化合作</p>
+    </div>
+    <!-- 礼品卡-->
+    <div class="card1 public">
+        <h3>礼品卡</h3>
+        <h4>-- 代金卡 --</h4>
+        <a href="#">点击查看使用流程&gt;&gt;</a>
+        <img src="Eimages/gift-card.png" alt=""/>
+    </div>
+    <!-- 尊享卡-->
+    <div class="card2 public">
+        <h3>尊享卡</h3>
+        <a href="#">点击查看使用流程&gt;&gt;</a>
+        <img src="Eimages/enjoy.png" alt=""/>
+    </div>
+    <!-- 储值卡-->
+    <div class="card3 public">
+        <h3>储值卡</h3>
+        <a href="#">点击查看使用流程&gt;&gt;</a>
+        <img src="Eimages/stored-value.png" alt=""/>
+    </div>
+    <div class="question">查看常见问题&gt;&gt;</div>
+    <!-- 企业定制-->
+    <div class="business public">
+        <h3>企业定制</h3>
+        <img src="Eimages/bus-01.jpg" alt=""/>
+    </div>
+    <!-- 联系我们-->
+    <div class="callUs public">
+        <h3>如何购买-联系我们</h3>
+        <select name="" id="lastcity">
+            <option value="">上海</option>
+            <option value="">北京</option>
+            <option value="">河南</option>
+            <option value="">河北</option>
+        </select>
+
+        <p>联系电话:18272653825</p><br>
+
+        <p>联系邮箱:2360984694@qq.com</p>
+    </div>
+</div>
+<!-- 留言区-->
+<div class="note w2">
+    <h3>留言</h3>
+    <input type="text" placeholder="公司名称(必填)"/>
+    <input type="text" placeholder="联系人(必填)"/>
+    <input type="text" placeholder="手机号(必填)"/>
+    <input type="text" placeholder="邮箱(必填)"/>
+    <textarea name="" id="" cols="30" rows="10" placeholder="留言(必填)"></textarea>
+    <input id="submit" type="submit"/>
+    <!--返回顶部-->
+    <i id="back"><img src="Eimages/btn_top.jpg" alt=""/></i>
+</div>
+<!-- 底部-->
+<div class="footer">
+    <!-- 上部-->
+    <div class="top w">
+        <!-- 上部logo-->
+        <img src="Eimages/footer-logo.png" alt=""/><br>
+
+        <div class="lianjie">
+            <a href="#">联系我们</a><span>|</span>
+            <a href="#">订购帮助</a><span>|</span>
+            <a href="#">企业合作</a><span>|</span>
+            <a href="#">生产经营资质</a><span>|</span>
+            <a href="#">公告专区</a>
+        </div>
+        <div id="m_box">
+            <i id="sina"><img src="Eimages/footericon-01.png" alt=""/></i>
+            <i id="wechat"><img src="Eimages/footericon-02.png" alt=""/></i>
+            <i>APP</i>
+        </div>
+        <div id="slideEr">
+            <i id="sinaer"><img src="Eimages/2wm_xl.jpg" alt=""/></i>
+            <i id="wechater"><img src="Eimages/2wm_wx_2.jpg" alt=""/></i>
+        </div>
+        <div class="top_text">
+            <span>订购专线：400 650 2121（服务时间 08:00–22:00）</span><br>
+            <span>客服电话：021-23099721（全国） | kefu@21cake.com（邮箱）</span><br>
+            <span>北京/杭州/广州：提前5小时预订；上海：提前6-8小时预订；天津/苏州/无锡/深圳：提前8小时预订（当日22点以后订单，于次日8点开始审核） </span><br>
+            <span>当日蛋糕配送截止下单时间：北京：16:30；上海：16:30；杭州/广州：13:50；天津：10:30；苏州/无锡/深圳：11:00</span><br>
+            <span>网站注册公司名称: 北京廿一客食品有限公司 地址: 北京市北京经济技术开发区兴海二街5号院3号楼 </span>
+        </div>
+
+    </div>
+    <!-- 下部-->
+    <div class="bottom">
+        <span>Copyright© 21Cake蛋糕官网商城 2007-2017, 版权所有 京ICP备14006254号-1</span>
+    </div>
+</div>
+<!--楼层跳跃-->
+<div class="floor">
+    <ul>
+        <li id="gift">礼品卡</li>
+        <li id="enjoy">尊享卡</li>
+        <li id="store">储值卡</li>
+    </ul>
+</div>
+</body>
+</html>
